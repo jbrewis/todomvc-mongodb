@@ -87,15 +87,16 @@
 
 	});
 
-	app.put('/api/todos/:todo_id', function(req, res){
-	  return Todo.findById(req.params.todo_id, function(err, todo) {
-	    todo.title = req.body.title;
-	    todo.completed = req.body.completed;
+	app.put('/api/todos', function(req, res){
+		var query = {title: req.body.title}
+	  return Todo.find(query).toArray(function(err, todo) {
+	    todo[0].title = req.body.title;
+	    todo[0].completed = req.body.completed;
 	    return todo.save(function(err) {
 	      if (err) {
 	        res.send(err);
 	      }
-	      return res.send(todo);
+	      return res.send(todo[0]);
 	    });
 	  });
 	});
